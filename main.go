@@ -124,8 +124,8 @@ func main() {
 
 		}
 
-		row := db.Where("email = ?", req.Email).RowsAffected
-		if row == 0 {
+		row := db.Where("email = ?", req.Email).Find(&entities.User{}).RowsAffected
+		if row == 1 {
 			return c.JSON(400, Response{
 				Message: "failed create user",
 				Errors:  "email already exist",
@@ -149,7 +149,12 @@ func main() {
 			})
 		}
 
-		err = db.Create(&req).Error
+		data := entities.User{
+			Name:  req.Name,
+			Email: req.Email,
+		}
+
+		err = db.Create(&data).Error
 		if err != nil {
 			log.Println(err.Error())
 			return c.JSON(500, echo.Map{

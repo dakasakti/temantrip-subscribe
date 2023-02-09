@@ -106,6 +106,8 @@ func main() {
 					messages[field.Field()] = "this field is required"
 				case "lowercase":
 					messages[field.Field()] = "this field is must be lowercase"
+				case "e164":
+					messages[field.Field()] = "this field is must be valid number"
 				case "email":
 					messages[field.Field()] = "this field is must be valid email"
 				case "min":
@@ -152,6 +154,7 @@ func main() {
 		data := entities.User{
 			Name:  req.Name,
 			Email: req.Email,
+			NoHP:  req.NoHP,
 		}
 
 		err = db.Create(&data).Error
